@@ -1,0 +1,131 @@
+{% extends "templates/web_base.html" %}
+{% block title %}E-Commerece || Store{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="head">
+        <h1>Premium Collection 2025</h1>
+        <p>Discover our curated selection of exceptional products</p>
+        <a href="#products" class="cta-button">Shop Now</a>
+    </div>
+</section>
+<div class="title">
+    <h2 class="section-title">Featured Products</h2>
+</div>
+<section class="products-section" id="products">
+    <!-- Filter Dropdown -->
+    <!-- Item Group Filter -->
+    <div class="filter-section" style="margin-bottom: 2rem;">
+        <label>Filter by Item Group:</label>
+        <select id="item-group-filter">
+            <option value="all">All</option>
+            {% for group in item_groups %}
+            <option value="{{ group }}">{{ group }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" id="products-grid">
+        {% for item in items %}
+        <div class="product-card" data-group="{{ item.item_group }}"
+            style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px;">
+            <div class="product-number">{{ loop.index }}</div>
+            <div class="product-image">
+                <img src="{{ item.image }}" alt="{{ item.item_name }}"
+                    style="width: 100%; height: 200px; object-fit: cover;">
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">{{ item.item_name }}</h3>
+                <p class="product-description">{{ item.description }}</p>
+                <div class="product-footer">
+                    <span class="product-price">${{ item.standard_rate|int }}</span>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Message when no items -->
+    <p id="no-items-msg" style="text-align:center; font-weight:bold; font-size:1.2rem; display:none; color:red;">
+        No items available in this group.
+    </p>
+
+
+
+</section>
+
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal('login')">&times;</button>
+        <h2 class="modal-title">Welcome Back!</h2>
+        <p class="modal-subtitle">Login to your account</p>
+
+        <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <input type="email" id="login-email" placeholder="you@example.com">
+        </div>
+
+        <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter your password">
+        </div>
+
+        <button class="submit-btn" onclick="handleLogin()">Login</button>
+
+        <div class="divider">OR</div>
+
+        <div class="social-login">
+            <button class="social-btn">🔵 Facebook</button>
+            <button class="social-btn">🔴 Google</button>
+        </div>
+
+        <div class="form-footer">
+            Don't have an account? <a onclick="switchModal('login', 'signup')">Sign up</a>
+        </div>
+    </div>
+</div>
+
+<!-- Signup Modal -->
+<div id="signupModal" class="modal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal('signup')">&times;</button>
+        <h2 class="modal-title">Join LuxeShop</h2>
+        <p class="modal-subtitle">Create your account</p>
+
+        <div class="form-group">
+            <label for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" placeholder="John Doe">
+        </div>
+
+        <div class="form-group">
+            <label for="signup-email">Email Address</label>
+            <input type="email" id="signup-email" placeholder="you@example.com">
+        </div>
+
+        <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" placeholder="Create a password">
+        </div>
+
+        <div class="form-group">
+            <label for="signup-confirm">Confirm Password</label>
+            <input type="password" id="signup-confirm" placeholder="Confirm your password">
+        </div>
+
+        <button class="submit-btn" onclick="handleSignup()">Create Account</button>
+
+        <div class="divider">OR</div>
+
+        <div class="social-login">
+            <button class="social-btn">🔵 Facebook</button>
+            <button class="social-btn">🔴 Google</button>
+        </div>
+
+        <div class="form-footer">
+            Already have an account? <a onclick="switchModal('signup', 'login')">Login</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
