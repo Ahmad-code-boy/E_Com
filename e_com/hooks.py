@@ -29,7 +29,7 @@ app_license = "mit"
 # app_include_js = "/assets/e_com/js/e_com.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/e_com/css/e_com.css"
+web_include_css = "/assets/e_com/css/custom.css"
 # web_include_js = "/assets/e_com/js/e_com.js"
 
 # include custom scss in every website theme (without file extension ".scss")
@@ -66,6 +66,16 @@ app_license = "mit"
 
 # Generators
 # ----------
+# apps/my_custom_app/hooks.py
+
+# ... (baaki code ke neeche yeh add karein) ...
+
+# role_home_page = {
+#     "Website User": "/web_home",
+#     "Customer": "/web_home",
+#     "Guest": "/web_home",
+#     "Administrator": "/web_home.html"  # <-- Administrator role add kar diya gaya hai
+# }
 
 # automatically create page for each record of this doctype
 # website_generators = ["Web Page"]

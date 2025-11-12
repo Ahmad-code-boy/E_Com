@@ -28,20 +28,38 @@ window.onclick = function (event) {
 }
 
 // Handle Login
-function handleLogin() {
-    const emailInput = document.getElementById('login-email');
-    const passwordInput = document.getElementById('login-password');
+async function handleLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value.trim();
 
-    if (emailInput && passwordInput) {
-        const email = emailInput.value;
-        const password = passwordInput.value;
+    if (!email || !password) {
+        alert('Please fill in all fields');
+        return;
+    }
 
-        if (email && password) {
-            alert('Login successful! Welcome back!');
-            closeModal('login');
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/method/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                usr: email,
+                pwd: password
+            }),
+            credentials: 'include'
+        });
+
+        const result = await response.json();
+
+        if (result.message === 'Logged In') {
+            window.open('http://127.0.0.1:8000', '_blank');
         } else {
-            alert('Please fill in all fields');
+            alert(result.message || 'Login failed. Please try again.');
         }
+    } catch (error) {
+        console.error(error);
+        alert('An error occurred while logging in.');
     }
 }
 
@@ -74,12 +92,12 @@ function handleSignup() {
             args: {
                 full_name: name,
                 email: email,
-                password: password  
+                password: password
             },
-            callback: function(r) {
+            callback: function (r) {
                 console.log(r);
-                
-                if(r.message.status === "success") {
+
+                if (r.message.status === "success") {
                     alert(r.message.message);
                     closeModal('signup');
                 } else {
@@ -135,3 +153,14 @@ filterDropdown.addEventListener('change', () => {
     noItemsMsg.style.display = anyVisible ? 'none' : 'block';
 });
 
+const logout = () => {
+	return frappe.call({
+		method: "logout",
+		callback: function (r) {
+			if (r.exc) {
+				return;
+			}
+			window.location.href = "/login.html";
+		},
+	});
+}
