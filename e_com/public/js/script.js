@@ -64,49 +64,6 @@ async function handleLogin() {
 }
 
 // Handle Signup
-function handleSignup() {
-    const nameInput = document.getElementById('signup-name');
-    const emailInput = document.getElementById('signup-email');
-    const passwordInput = document.getElementById('signup-password');
-    const confirmInput = document.getElementById('signup-confirm');
-
-    if (nameInput && emailInput && passwordInput && confirmInput) {
-        const name = nameInput.value.trim();
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-        const confirm = confirmInput.value;
-
-        if (!name || !email || !password || !confirm) {
-            alert('Please fill in all fields');
-            return;
-        }
-
-        if (password !== confirm) {
-            alert('Passwords do not match');
-            return;
-        }
-
-        // Call Frappe API
-        frappe.call({
-            method: "e_com.api.items.signup_user",
-            args: {
-                full_name: name,
-                email: email,
-                password: password
-            },
-            callback: function (r) {
-                console.log(r);
-
-                if (r.message.status === "success") {
-                    alert(r.message.message);
-                    closeModal('signup');
-                } else {
-                    alert(r.message.message);
-                }
-            }
-        });
-    }
-}
 
 // Add to Cart functionality
 document.querySelectorAll('.add-to-cart').forEach(button => {

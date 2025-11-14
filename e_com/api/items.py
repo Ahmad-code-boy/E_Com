@@ -28,29 +28,22 @@ def import_items_from_json():
             frappe.db.commit()
     return "Items Imported Successfully!"
 
+
 @frappe.whitelist(allow_guest=True)
 def signup_user(full_name, email, password):
+    # Check if user already exists
     if frappe.db.exists("User", {"email": email}):
         return {"status": "error", "message": "Email already registered"}
 
+    # Create new User
     user = frappe.get_doc({
         "doctype": "User",
         "email": email,
-        "first_name": full_name.split()[0],
-        "last_name": " ".join(full_name.split()[1:]) if len(full_name.split()) > 1 else "",
+        "first_name": full_name,
         "enabled": 1,
-        "new_password": password
+        "new_password": password  # Frappe will hash and save automatically
     })
+    user.insert(ignore_permissions=True)
 
-    user.flags.ignore_mandatory = True
-    user.flags.ignore_permissions = True
-    user.flags.ignore_permissions_apply_user = True
+    return {"status": "success", "message": "User created successfully"}
 
-    user.insert()
-    frappe.db.commit()
-
-    # **Assign default role (e.g., Customer)**
-    user.add_roles("Customer")
-    frappe.db.commit()
-
-    return {"status": "success", "message": "Account created successfully!"}

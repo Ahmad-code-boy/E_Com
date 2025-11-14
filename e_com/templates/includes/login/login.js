@@ -230,8 +230,7 @@ login.login_handlers = (function () {
 			if (data.message == 'Logged In') {
 				login.set_status({{ _("Success") | tojson }}, 'green');
 				document.body.innerHTML = `{% include "templates/includes/splash_screen.html" %}`;
-                window.location.href = "/web_home.html";
-			} else if (data.message == 'Password Reset') {
+	            window.location.href = frappe.utils.sanitise_redirect(frappe.utils.get_url_arg("redirect-to")) || data.home_page;			} else if (data.message == 'Password Reset') {
 				window.location.href = frappe.utils.sanitise_redirect(data.redirect_to);
 			} else if (data.message == "No App") {
 				login.set_status({{ _("Success") | tojson }}, 'green');
@@ -395,3 +394,30 @@ var continue_email = function (setup, prompt) {
 }
 
 login.route();
+
+document.querySelector(".form-signup").onsubmit = async function(e) {
+    e.preventDefault();
+
+    const full_name = document.getElementById("signup_full_name").value;
+    const email = document.getElementById("signup_email").value;
+    const password = document.getElementById("signup_password").value;
+    const confirm_password = document.getElementById("signup_confirm_password").value;
+
+    if(password !== confirm_password){
+        frappe.msgprint("Passwords do not match");
+        return;
+    }
+
+    frappe.call({
+        method: "e_com.api.items.signup_user",
+        args: { full_name, email, password },
+        callback: function(r) {
+            if(r.message && r.message.status == "success"){
+                frappe.msgprint("Signup successful! Please login.");
+                window.location.hash = "#login"; // redirect to login
+            } else {
+                frappe.msgprint(r.message.message);
+            }
+        }
+    });
+};

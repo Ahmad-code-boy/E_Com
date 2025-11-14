@@ -46,7 +46,7 @@
   {% if title %}
   <h4>{{ _(title) }}</h4>
   {% else %}
-  <h4>Login to Ahmad</h4>
+  <h4>Your Shopping Starts Here</h4>
   {% endif %}
 </div>
 {% endmacro %}
@@ -118,10 +118,43 @@
 
     <!-- SIGNUP SECTION -->
     <section class='for-signup {{ "signup-disabled" if disable_signup else "" }}' style="display:none;">
-      {{ logo_section(_('Create a {0} Account').format(app_name or _("Frappe"))) }}
+       <h2>Create Your Shopping Account</h2>
       <div class="login-content page-card">
         {%- if not disable_signup -%}
-        {{ signup_form_template }}
+        <form class="form-signin form-signup" role="form">
+          <div class="page-card-body">
+            <div class="form-group">
+              <label for="signup_full_name">{{ _("Full Name") }} <span style="color: #d91b27;">*</span></label>
+              <input type="text" id="signup_full_name" class="form-control" placeholder="{{ _('John Doe') }}" required
+                autofocus>
+            </div>
+
+            <div class="form-group">
+              <label for="signup_email">{{ _("Email") }} <span style="color: #d91b27;">*</span></label>
+              <input type="email" id="signup_email" class="form-control" placeholder="{{ _('example@gmail.com') }}"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="signup_password">{{ _("Password") }} <span style="color: #d91b27;">*</span></label>
+              <input type="password" id="signup_password" class="form-control" placeholder="******" required>
+            </div>
+
+            <div class="form-group">
+              <label for="signup_confirm_password">{{ _("Confirm Password") }} <span
+                  style="color: #d91b27;">*</span></label>
+              <input type="password" id="signup_confirm_password" class="form-control" placeholder="******" required>
+            </div>
+          </div>
+
+          <div class="page-card-actions">
+            <button class="btn-primary" type="submit">{{ _("Sign Up") }}</button>
+            <p class="sign-up-message">
+              <a href="#login">{{ _("Back to Login") }}</a>
+            </p>
+          </div>
+        </form>
+
         {%- else -%}
         <div class='page-card-head mb-2'>
           <span class='indicator gray'>{{_("Signup Disabled")}}</span>
@@ -218,6 +251,7 @@
 
 {% block script %}
 <script>{% include "templates/includes/login/login.js" %}</script>
+
 {% endblock %}
 
 {% block sidebar %}{% endblock %}

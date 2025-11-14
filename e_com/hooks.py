@@ -70,12 +70,10 @@ web_include_css = "/assets/e_com/css/custom.css"
 
 # ... (baaki code ke neeche yeh add karein) ...
 
-# role_home_page = {
-#     "Website User": "/web_home",
-#     "Customer": "/web_home",
-#     "Guest": "/web_home",
-#     "Administrator": "/web_home.html"  # <-- Administrator role add kar diya gaya hai
-# }
+role_home_page = {
+    "Website User": "/web_home",
+    "Guest": "/web_home",
+}
 
 # automatically create page for each record of this doctype
 # website_generators = ["Web Page"]
